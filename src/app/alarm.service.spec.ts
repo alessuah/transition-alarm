@@ -14,9 +14,9 @@ describe('AlarmService', () => {
         expect(service).toBeTruthy();
     });
 
-    it('should schedule a time', () => {
-        service.schedule("09:00:00");
-        expect(service.scheduledTime).toBe('09:00:00');
+    it.each([["09:00:00","09:00:00"]])('should schedule a time', (n, expected) => {
+        service.schedule(n);
+        expect(service.scheduledTime).toBe(expected);
     })
 
 });
