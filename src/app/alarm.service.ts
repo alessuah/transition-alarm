@@ -23,7 +23,7 @@ export class AlarmService{
 
     schedule(time: string)
     {
-        this._scheduledTime = "09:00:00";
+        this._scheduledTime = time;
     }
 
     
