@@ -1,8 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Temporal } from "@js-temporal/polyfill";
 
-@Injectable({providedIn: 'root'})
-export class AlarmService{
+export class Alarm{
    
     //Crear constructor que pase el numbero de alarmas y el tiempo 
     //que habrá entre ellas.
@@ -11,9 +10,15 @@ export class AlarmService{
     // scheduledTime: 05:00:00, 2 intervalos, 5 mins
     //Crearía -> scheduledTime: :05:00:00 y [04:55:00, 04:50:00] 
     
-    constructor(scheduledTime: Temporal.PlainTime)
+    constructor(
+        scheduledTime: Temporal.PlainTime,
+        numberOfIntervals: number,
+        timeBetweenIntervals: number
+    )
     {
         this._scheduledTime = scheduledTime;
+        this._numberOfIntervals = numberOfIntervals;
+        this._timeBetweenIntervals = timeBetweenIntervals;
     }
 
     private _scheduledTime : Temporal.PlainTime;
@@ -21,24 +26,15 @@ export class AlarmService{
         return this._scheduledTime;
     }
 
-    schedule(time: Temporal.PlainTime)
+    private _numberOfIntervals: number;
+    public get numberOfIntervals() : number
     {
-        this._scheduledTime = time;
+        return this._numberOfIntervals;
     }
 
     
-    // private targetTime: Temporal.PlainDateTime = Temporal.Now.plainDateTimeISO();
-    // private interval: number = 5;
-
-    // setTargetTime(value:string)
-    // {
-    //     this.targetTime = Temporal.PlainDateTime.from(value);
-    //     //calcular los preTargetTime con sus intervalos
-    // }
-
-    // setInterval(value:number)
-    // {
-    //     this.interval = value;
-    //     //recalcular cada vez que el intervalo es cambiado.
-    // }
+    private _timeBetweenIntervals : number;
+    public get timeBetweenIntervals(): number {
+        return this._timeBetweenIntervals;
+    }
 }
