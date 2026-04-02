@@ -11,17 +11,17 @@ export class AlarmService{
     // scheduledTime: 05:00:00, 2 intervalos, 5 mins
     //Crearía -> scheduledTime: :05:00:00 y [04:55:00, 04:50:00] 
     
-    constructor()
+    constructor(scheduledTime: Temporal.PlainTime)
     {
-
+        this._scheduledTime = scheduledTime;
     }
 
-    private _scheduledTime : string ="";
-    public get scheduledTime() : string {
+    private _scheduledTime : Temporal.PlainTime;
+    public get scheduledTime() : Temporal.PlainTime {
         return this._scheduledTime;
     }
 
-    schedule(time: string)
+    schedule(time: Temporal.PlainTime)
     {
         this._scheduledTime = time;
     }

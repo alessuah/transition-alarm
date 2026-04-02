@@ -1,22 +1,16 @@
 import { TestBed } from "@angular/core/testing";
 import {AlarmService} from './alarm.service';
+import { Temporal } from "@js-temporal/polyfill";
 
 describe('AlarmService', () => {
-    let service: AlarmService;
 
-    beforeEach(() => {
-        TestBed.configureTestingModule({
-        });
-        service = TestBed.inject(AlarmService);
-    });
-
-    it('should create', () => {
-        expect(service).toBeTruthy();
-    });
-
-    it.each([["09:00:00","09:00:00"], ["08:00:00","08:00:00"]])('should schedule a time', (n, expected) => {
-        service.schedule(n);
-        expect(service.scheduledTime).toBe(expected);
-    })
+    it.each(
+        [[new Temporal.PlainTime(9), new Temporal.PlainTime(9)],
+        [new Temporal.PlainTime(8), new Temporal.PlainTime(8)]])
+        ('should schedule a time', (n, expected) => {
+            let sut = new AlarmService(n)
+            
+            expect(sut.scheduledTime).toStrictEqual(expected);
+        })
 
 });
