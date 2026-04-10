@@ -19,6 +19,9 @@ describe('Alarm', () => {
         
         //Assert
         expect(sut).toBeTruthy();
+        expect(sut.intervals.length).toBe(2);
+        expect(sut.intervals[0].toString()).toBe("08:55:00");
+        expect(sut.intervals[1].toString()).toBe("08:55:00");
     });
 
 });
