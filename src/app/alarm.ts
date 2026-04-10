@@ -47,9 +47,11 @@ export class Alarm{
 
     private buildIntervals()
     {
+        let difference = 0;
         for(let i = 0; i < this.numberOfIntervals; i++)
         {
-            this._intervals.push(this.scheduledTime.subtract({minutes:this._timeBetweenIntervals}));
+            this._intervals.push(this.scheduledTime.subtract({minutes:this._timeBetweenIntervals + difference}));
+            difference += this._timeBetweenIntervals;
         }
     }
 }
