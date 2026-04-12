@@ -12,7 +12,7 @@ export class Alarm{
         this._scheduledTime = scheduledTime;
         this._numberOfIntervals = numberOfIntervals;
         this._timeBetweenIntervals = timeBetweenIntervals;
-        this.buildIntervals()
+        this.buildIntervals();
     }
 
     private _scheduledTime : Temporal.PlainTime;
@@ -46,5 +46,12 @@ export class Alarm{
             this._intervals.push(this.scheduledTime.subtract({minutes:this._timeBetweenIntervals + difference}));
             difference += this._timeBetweenIntervals;
         }
+    }
+
+    public addInterval()
+    {
+        this._numberOfIntervals++;
+        let lastInterval = this.intervals[this._intervals.length -1];
+        this._intervals.push(lastInterval.subtract({minutes:this.timeBetweenIntervals}));
     }
 }

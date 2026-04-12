@@ -25,4 +25,16 @@ describe('Alarm', () => {
         expect(sut.intervals[1].toString()).toBe("08:50:00");
     });
 
+    it('should add new interval', () => {
+        //Arrange 
+        let sut = new Alarm(new Temporal.PlainTime(9), 2, 5);
+
+        //Act
+        sut.addInterval();
+
+        //Assert
+        expect(sut.numberOfIntervals).toBe(3);
+        expect(sut.intervals.length).toBe(3);
+    });
+
 });
