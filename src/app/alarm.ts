@@ -40,10 +40,10 @@ export class Alarm{
 
     private buildIntervals()
     {
-        let difference = 0;
+        let difference = this.timeBetweenIntervals;
         for(let i = 0; i < this.numberOfIntervals; i++)
         {
-            this._intervals.push(this.scheduledTime.subtract({minutes:this._timeBetweenIntervals + difference}));
+            this._intervals.push(this.scheduledTime.subtract({minutes:difference}));
             difference += this._timeBetweenIntervals;
         }
     }
