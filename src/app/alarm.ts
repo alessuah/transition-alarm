@@ -10,7 +10,6 @@ export class Alarm{
     )
     {
         this._scheduledTime = scheduledTime;
-        this._numberOfIntervals = numberOfIntervals;
         this._timeBetweenIntervals = timeBetweenIntervals;
         this._intervals = new Array(numberOfIntervals);
         this.buildIntervals();
@@ -21,10 +20,9 @@ export class Alarm{
         return this._scheduledTime;
     }
 
-    private _numberOfIntervals: number;
     public get numberOfIntervals() : number
     {
-        return this._numberOfIntervals;
+        return this._intervals.length;
     }
 
     
@@ -51,7 +49,6 @@ export class Alarm{
 
     public addInterval()
     {
-        this._numberOfIntervals++;
         let lastInterval = this.intervals[this._intervals.length -1];
         this._intervals.push(lastInterval.subtract({minutes:this.timeBetweenIntervals}));
     }
