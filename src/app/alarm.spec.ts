@@ -30,4 +30,18 @@ describe('Alarm', () => {
         expect(sut.intervals[2].toString()).toBe("08:45:00");
     });
 
+    it('should delete last interval added', () => {
+
+        //Arrange
+        let sut = new Alarm(new Temporal.PlainTime(9), 2 ,5);
+
+        //Act
+        sut.deleteInterval();
+
+        //Assert
+        expect(sut.numberOfIntervals).toBe(1);
+        expect(sut.intervals.length).toBe(1);
+        expect(sut.intervals[0].toString()).toBe("08:55:00");
+    });
+
 });

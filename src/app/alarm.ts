@@ -52,4 +52,9 @@ export class Alarm{
         let lastInterval = this.intervals[this._intervals.length -1];
         this._intervals.push(lastInterval.subtract({minutes:this.timeBetweenIntervals}));
     }
+
+    public deleteInterval()
+    {
+        this._intervals.pop();
+    }
 }
