@@ -44,4 +44,16 @@ describe('Alarm', () => {
         expect(sut.intervals[0].toString()).toBe("08:55:00");
     });
 
+    it('should ignore deletion of a non-existent interval', () =>
+    {
+        //Arrange
+        let sut = new Alarm(new Temporal.PlainTime(9), 0 ,5);
+
+        //Act
+        sut.deleteInterval();
+
+        //Assert
+        expect(sut.numberOfIntervals).toBe(0);
+        expect(sut.intervals.length).toBe(0);
+    });
 });
