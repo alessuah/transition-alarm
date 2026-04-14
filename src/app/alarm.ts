@@ -31,7 +31,7 @@ export class Alarm{
         return this._timeBetweenIntervals;
     }
 
-    private _intervals: Array<Temporal.PlainTime> = [];
+    private _intervals: Array<Temporal.PlainTime>;
     public get intervals(): ReadonlyArray<Temporal.PlainTime>
     {
         return this._intervals;
