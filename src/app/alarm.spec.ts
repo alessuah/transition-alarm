@@ -12,8 +12,8 @@ describe('Alarm', () => {
         expect(sut).toBeTruthy();
         expect(sut.intervals.length).toBe(2);
         expect(sut.scheduledTime.toString()).toBe("09:00:00");
-        expect(sut.intervals[0].toString()).toBe("08:55:00");
-        expect(sut.intervals[1].toString()).toBe("08:50:00");
+        expect(sut.intervals[0].value.toString()).toBe("08:55:00");
+        expect(sut.intervals[1].value.toString()).toBe("08:50:00");
     });
 
     it('should add new interval', () => {
@@ -26,8 +26,8 @@ describe('Alarm', () => {
         //Assert
         expect(sut.numberOfIntervals).toBe(3);
         expect(sut.intervals.length).toBe(3);
-        expect(sut.intervals[1].toString()).toBe("08:50:00");
-        expect(sut.intervals[2].toString()).toBe("08:45:00");
+        expect(sut.intervals[1].value.toString()).toBe("08:50:00");
+        expect(sut.intervals[2].value.toString()).toBe("08:45:00");
     });
 
     it('should delete last interval added', () => {
@@ -41,7 +41,7 @@ describe('Alarm', () => {
         //Assert
         expect(sut.numberOfIntervals).toBe(1);
         expect(sut.intervals.length).toBe(1);
-        expect(sut.intervals[0].toString()).toBe("08:55:00");
+        expect(sut.intervals[0].value.toString()).toBe("08:55:00");
     });
 
     it('should ignore deletion of a non-existent interval', () =>

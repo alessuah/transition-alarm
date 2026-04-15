@@ -1,8 +1,13 @@
 import { Injectable } from "@angular/core";
 import { Temporal } from "@js-temporal/polyfill";
 
+export interface Interval{
+    timeoutId: number;
+    value: Temporal.PlainTime
+}
+
 export class Alarm{
-      
+    
     constructor(
         scheduledTime: Temporal.PlainTime,
         numberOfIntervals: number,
@@ -31,8 +36,8 @@ export class Alarm{
         return this._timeBetweenIntervals;
     }
 
-    private _intervals: Array<Temporal.PlainTime>;
-    public get intervals(): ReadonlyArray<Temporal.PlainTime>
+    private _intervals: Array<Interval>;
+    public get intervals(): ReadonlyArray<Interval>
     {
         return this._intervals;
     }
@@ -42,7 +47,11 @@ export class Alarm{
         let difference = this.timeBetweenIntervals;
         for(let i = 0; i < this._intervals.length; i++)
         {
-            this._intervals[i] = this.scheduledTime.subtract({minutes:difference});
+            this._intervals[i] = {
+                timeoutId: setTimeout(() => "Hola", 3000),
+                value: this.scheduledTime.subtract({minutes:difference})
+
+            };
             difference += this._timeBetweenIntervals;
         }
     }
@@ -50,11 +59,14 @@ export class Alarm{
     public addInterval()
     {
         let lastInterval = this.intervals[this._intervals.length -1];
-        this._intervals.push(lastInterval.subtract({minutes:this.timeBetweenIntervals}));
+        this._intervals.push({
+            timeoutId: setTimeout(() => "Hola", 3000),
+            value: lastInterval.value.subtract({minutes:this.timeBetweenIntervals})});
     }
 
     public deleteInterval()
     {
-        this._intervals.pop();
+        let lastInterval = this._intervals.pop();
+        clearTimeout(lastInterval?.timeoutId);
     }
 }
