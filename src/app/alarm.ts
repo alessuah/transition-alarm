@@ -1,4 +1,3 @@
-import { Injectable } from "@angular/core";
 import { Temporal } from "@js-temporal/polyfill";
 
 export interface Interval{
@@ -6,17 +5,22 @@ export interface Interval{
     value: Temporal.PlainTime
 }
 
+type OnTimeoutDelegate = () => void;
+
 export class Alarm{
     
     constructor(
         scheduledTime: Temporal.PlainTime,
         numberOfIntervals: number,
-        timeBetweenIntervals: number
+        timeBetweenIntervals: number,
+        onTimeout: OnTimeoutDelegate,
+
     )
     {
         this._scheduledTime = scheduledTime;
         this._timeBetweenIntervals = timeBetweenIntervals;
         this._intervals = new Array(numberOfIntervals);
+        this._onTimeout = onTimeout;
         this.buildIntervals();
     }
 
@@ -42,13 +46,15 @@ export class Alarm{
         return this._intervals;
     }
 
+    private _onTimeout: OnTimeoutDelegate;
+
     private buildIntervals()
     {
         let difference = this.timeBetweenIntervals;
         for(let i = 0; i < this._intervals.length; i++)
         {
             this._intervals[i] = {
-                timeoutId: setTimeout(() => "Hola", 3000),
+                timeoutId: setTimeout(this._onTimeout, 1000),
                 value: this.scheduledTime.subtract({minutes:difference})
 
             };
@@ -60,7 +66,7 @@ export class Alarm{
     {
         let lastInterval = this.intervals[this._intervals.length -1];
         this._intervals.push({
-            timeoutId: setTimeout(() => "Hola", 3000),
+            timeoutId: setTimeout(this._onTimeout, 0),
             value: lastInterval.value.subtract({minutes:this.timeBetweenIntervals})});
     }
 

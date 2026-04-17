@@ -6,7 +6,8 @@ describe('Alarm', () => {
 
     it('should create object' , () => {
         //Arrange & Act
-        let sut = new Alarm(new Temporal.PlainTime(9), 2 , 5);
+        const mockCallback = vi.fn();
+        let sut = new Alarm(new Temporal.PlainTime(9), 2 , 5, mockCallback);
         
         //Assert
         expect(sut).toBeTruthy();
@@ -17,8 +18,9 @@ describe('Alarm', () => {
     });
 
     it('should add new interval', () => {
-        //Arrange 
-        let sut = new Alarm(new Temporal.PlainTime(9), 2, 5);
+        //Arrange
+        const mockCallback = vi.fn(); 
+        let sut = new Alarm(new Temporal.PlainTime(9), 2, 5, mockCallback);
 
         //Act
         sut.addInterval();
@@ -33,7 +35,8 @@ describe('Alarm', () => {
     it('should delete last interval added', () => {
 
         //Arrange
-        let sut = new Alarm(new Temporal.PlainTime(9), 2 ,5);
+        const mockCallback = vi.fn();
+        let sut = new Alarm(new Temporal.PlainTime(9), 2 ,5, mockCallback);
 
         //Act
         sut.deleteInterval();
@@ -47,7 +50,8 @@ describe('Alarm', () => {
     it('should ignore deletion of a non-existent interval', () =>
     {
         //Arrange
-        let sut = new Alarm(new Temporal.PlainTime(9), 0 ,5);
+        const mockCallback = vi.fn();
+        let sut = new Alarm(new Temporal.PlainTime(9), 0 ,5, mockCallback);
 
         //Act
         sut.deleteInterval();
@@ -56,4 +60,22 @@ describe('Alarm', () => {
         expect(sut.numberOfIntervals).toBe(0);
         expect(sut.intervals.length).toBe(0);
     });
+
+    it("should call onTimeout event once per number of intervals", async () =>
+    {    
+        //Arrange
+        vi.useFakeTimers();
+        const mockCallback = vi.fn();
+        
+        //Act
+        let sut = new Alarm(new Temporal.PlainTime(9), 1 ,5, mockCallback);
+
+        await vi.advanceTimersByTimeAsync(1000);
+        
+        //Assert
+        expect(mockCallback).toHaveBeenCalled();
+
+        vi.useRealTimers();
+    });
+    
 });
