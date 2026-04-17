@@ -7,7 +7,7 @@ describe('Alarm', () => {
     it('should create object' , () => {
         //Arrange & Act
         const mockCallback = vi.fn();
-        let sut = new Alarm(new Temporal.PlainTime(9), 2 , 5, mockCallback);
+        let sut = new Alarm(new Temporal.PlainTime(9), {count: 2 ,timeBetween: 5}, mockCallback);
         
         //Assert
         expect(sut).toBeTruthy();
@@ -20,7 +20,7 @@ describe('Alarm', () => {
     it('should add new interval', () => {
         //Arrange
         const mockCallback = vi.fn(); 
-        let sut = new Alarm(new Temporal.PlainTime(9), 2, 5, mockCallback);
+        let sut = new Alarm(new Temporal.PlainTime(9), {count: 2 ,timeBetween: 5}, mockCallback);
 
         //Act
         sut.addInterval();
@@ -36,7 +36,7 @@ describe('Alarm', () => {
 
         //Arrange
         const mockCallback = vi.fn();
-        let sut = new Alarm(new Temporal.PlainTime(9), 2 ,5, mockCallback);
+        let sut = new Alarm(new Temporal.PlainTime(9), {count: 2 ,timeBetween: 5}, mockCallback);
 
         //Act
         sut.deleteInterval();
@@ -51,7 +51,7 @@ describe('Alarm', () => {
     {
         //Arrange
         const mockCallback = vi.fn();
-        let sut = new Alarm(new Temporal.PlainTime(9), 0 ,5, mockCallback);
+        let sut = new Alarm(new Temporal.PlainTime(9), {count: 0 ,timeBetween: 5}, mockCallback);
 
         //Act
         sut.deleteInterval();
@@ -68,7 +68,7 @@ describe('Alarm', () => {
         const mockCallback = vi.fn();
         
         //Act
-        let sut = new Alarm(new Temporal.PlainTime(9), 1 ,5, mockCallback);
+        let sut = new Alarm(new Temporal.PlainTime(9), {count: 1 ,timeBetween: 5}, mockCallback);
 
         await vi.advanceTimersByTimeAsync(1000);
         

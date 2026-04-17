@@ -5,21 +5,25 @@ export interface Interval{
     value: Temporal.PlainTime
 }
 
+export interface IntervalConfiguration{
+    count: number,
+    timeBetween: number,
+}
+
 type OnTimeoutDelegate = () => void;
 
 export class Alarm{
     
     constructor(
         scheduledTime: Temporal.PlainTime,
-        numberOfIntervals: number,
-        timeBetweenIntervals: number,
+        intervalConfiguration: IntervalConfiguration,
         onTimeout: OnTimeoutDelegate,
 
     )
     {
         this._scheduledTime = scheduledTime;
-        this._timeBetweenIntervals = timeBetweenIntervals;
-        this._intervals = new Array(numberOfIntervals);
+        this._timeBetweenIntervals = intervalConfiguration.timeBetween;
+        this._intervals = new Array(intervalConfiguration.count);
         this._onTimeout = onTimeout;
         this.buildIntervals();
     }
