@@ -1,14 +1,26 @@
 import { TestBed } from "@angular/core/testing";
-import {Alarm} from './alarm';
+import { Alarm, TimeProvider } from './alarm';
 import { Temporal } from "@js-temporal/polyfill";
 
 describe('Alarm', () => {
 
-    it('should create object' , () => {
+    it('should create object', () => {
         //Arrange & Act
         const mockCallback = vi.fn();
-        let sut = new Alarm(new Temporal.PlainTime(9), {count: 2 ,timeBetween: 5}, mockCallback);
-        
+        const mockedTimeProvider: TimeProvider = {
+            now: Temporal.PlainDateTime.from(
+                {
+                    year: 2026,
+                    month: 4,
+                    day: 1,
+                    hour: 8,
+                    minute: 50,
+                    second: 0
+                }
+            )
+        };
+        let sut = new Alarm(new Temporal.PlainTime(9), { count: 2, timeBetween: 5 }, mockCallback, mockedTimeProvider);
+
         //Assert
         expect(sut).toBeTruthy();
         expect(sut.intervals.length).toBe(2);
@@ -19,8 +31,20 @@ describe('Alarm', () => {
 
     it('should add new interval', () => {
         //Arrange
-        const mockCallback = vi.fn(); 
-        let sut = new Alarm(new Temporal.PlainTime(9), {count: 2 ,timeBetween: 5}, mockCallback);
+        const mockCallback = vi.fn();
+        const mockedTimeProvider: TimeProvider = {
+            now: Temporal.PlainDateTime.from(
+                {
+                    year: 2026,
+                    month: 4,
+                    day: 1,
+                    hour: 8,
+                    minute: 50,
+                    second: 0
+                }
+            )
+        };
+        let sut = new Alarm(new Temporal.PlainTime(9), { count: 2, timeBetween: 5 }, mockCallback,mockedTimeProvider);
 
         //Act
         sut.addInterval();
@@ -36,7 +60,20 @@ describe('Alarm', () => {
 
         //Arrange
         const mockCallback = vi.fn();
-        let sut = new Alarm(new Temporal.PlainTime(9), {count: 2 ,timeBetween: 5}, mockCallback);
+        const mockedTimeProvider: TimeProvider = {
+            now: Temporal.PlainDateTime.from(
+                {
+                    year: 2026,
+                    month: 4,
+                    day: 1,
+                    hour: 8,
+                    minute: 50,
+                    second: 0
+                }
+            )
+        };
+        
+        let sut = new Alarm(new Temporal.PlainTime(9), { count: 2, timeBetween: 5 }, mockCallback, mockedTimeProvider);
 
         //Act
         sut.deleteInterval();
@@ -47,11 +84,22 @@ describe('Alarm', () => {
         expect(sut.intervals[0].value.toString()).toBe("08:55:00");
     });
 
-    it('should ignore deletion of a non-existent interval', () =>
-    {
+    it('should ignore deletion of a non-existent interval', () => {
         //Arrange
         const mockCallback = vi.fn();
-        let sut = new Alarm(new Temporal.PlainTime(9), {count: 0 ,timeBetween: 5}, mockCallback);
+        const mockedTimeProvider: TimeProvider = {
+            now: Temporal.PlainDateTime.from(
+                {
+                    year: 2026,
+                    month: 4,
+                    day: 1,
+                    hour: 8,
+                    minute: 50,
+                    second: 0
+                }
+            )
+        };
+        let sut = new Alarm(new Temporal.PlainTime(9), { count: 0, timeBetween: 5 }, mockCallback, mockedTimeProvider);
 
         //Act
         sut.deleteInterval();
@@ -61,21 +109,32 @@ describe('Alarm', () => {
         expect(sut.intervals.length).toBe(0);
     });
 
-    it("should call onTimeout event once per number of intervals", async () =>
-    {    
+    it("should call onTimeout event once per number of intervals", async () => {
         //Arrange
         vi.useFakeTimers();
         const mockCallback = vi.fn();
-        
+        const mockedTimeProvider: TimeProvider = {
+            now: Temporal.PlainDateTime.from(
+                {
+                    year: 2026,
+                    month: 4,
+                    day: 1,
+                    hour: 8,
+                    minute: 50,
+                    second: 0
+                }
+            )
+        };
+
         //Act
-        let sut = new Alarm(new Temporal.PlainTime(9), {count: 1 ,timeBetween: 5}, mockCallback);
+        let sut = new Alarm(new Temporal.PlainTime(9), { count: 1, timeBetween: 5 }, mockCallback, mockedTimeProvider);
 
         await vi.advanceTimersByTimeAsync(1000);
-        
+
         //Assert
         expect(mockCallback).toHaveBeenCalled();
 
         vi.useRealTimers();
     });
-    
+
 });

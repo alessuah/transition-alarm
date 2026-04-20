@@ -1,5 +1,10 @@
 import { Temporal } from "@js-temporal/polyfill";
 
+export interface TimeProvider
+{
+    now: Temporal.PlainDateTime;
+}
+
 export interface Interval{
     timeoutId: number;
     value: Temporal.PlainTime
@@ -18,6 +23,7 @@ export class Alarm{
         scheduledTime: Temporal.PlainTime,
         intervalConfiguration: IntervalConfiguration,
         onTimeout: OnTimeoutDelegate,
+        timeProvider: TimeProvider
 
     )
     {
@@ -25,6 +31,7 @@ export class Alarm{
         this._timeBetweenIntervals = intervalConfiguration.timeBetween;
         this._intervals = new Array(intervalConfiguration.count);
         this._onTimeout = onTimeout;
+        this._timeProvider = timeProvider;
         this.buildIntervals();
     }
 
@@ -51,15 +58,18 @@ export class Alarm{
     }
 
     private _onTimeout: OnTimeoutDelegate;
+    private _timeProvider: TimeProvider;
 
     private buildIntervals()
     {
         let difference = this.timeBetweenIntervals;
         for(let i = 0; i < this._intervals.length; i++)
         {
+            let intervalTime = this.scheduledTime.subtract({minutes:difference})
+
             this._intervals[i] = {
-                timeoutId: setTimeout(this._onTimeout, 1000),
-                value: this.scheduledTime.subtract({minutes:difference})
+                timeoutId: setTimeout(this._onTimeout, this.timeoutDiference(intervalTime)),
+                value: intervalTime
 
             };
             difference += this._timeBetweenIntervals;
@@ -78,5 +88,11 @@ export class Alarm{
     {
         let lastInterval = this._intervals.pop();
         clearTimeout(lastInterval?.timeoutId);
+    }
+
+    private timeoutDiference(time: Temporal.PlainTime): number
+    {
+        return time.until(this._timeProvider.now).milliseconds;
+        
     }
 }
