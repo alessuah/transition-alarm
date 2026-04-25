@@ -57,6 +57,19 @@ export class Alarm{
         return this._intervals;
     }
 
+    public get timeLeft(): Temporal.Duration
+    {
+        return this._timeProvider.now.until(
+            this._timeProvider.now.with(
+                {
+                    hour: this.scheduledTime.hour,
+                    minute: this.scheduledTime.minute,
+                    second: this.scheduledTime.second
+                }
+            )
+        );
+    }
+
     private _onTimeout: OnTimeoutDelegate;
     private _timeProvider: TimeProvider;
 
@@ -86,6 +99,7 @@ export class Alarm{
 
     public deleteInterval()
     {
+        //Hay que comprobar si lastInterval es indefinido si no al hacer clearTimeout epxlota seguro.
         let lastInterval = this._intervals.pop();
         clearTimeout(lastInterval?.timeoutId);
     }

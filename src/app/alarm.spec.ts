@@ -27,6 +27,7 @@ describe('Alarm', () => {
         expect(sut.scheduledTime.toString()).toBe("09:00:00");
         expect(sut.intervals[0].value.toString()).toBe("08:55:00");
         expect(sut.intervals[1].value.toString()).toBe("08:50:00");
+        expect(sut.timeLeft.toLocaleString()).toBe("10 min");
     });
 
     it('should add new interval', () => {
