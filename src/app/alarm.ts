@@ -81,7 +81,7 @@ export class Alarm{
             let intervalTime = this.scheduledTime.subtract({minutes:difference})
 
             this._intervals[i] = {
-                timeoutId: setTimeout(this._onTimeout, this.timeoutDiference(intervalTime)),
+                timeoutId: setTimeout(() => this.handleTimeout(), this.timeoutDiference(intervalTime)),
                 value: intervalTime
 
             };
@@ -95,6 +95,12 @@ export class Alarm{
         this._intervals.push({
             timeoutId: setTimeout(this._onTimeout, 0),
             value: lastInterval.value.subtract({minutes:this.timeBetweenIntervals})});
+    }
+
+    private handleTimeout(): void
+    {
+        this._intervals.shift();
+        this._onTimeout();
     }
 
     public deleteInterval()

@@ -4,6 +4,10 @@ import { Temporal } from "@js-temporal/polyfill";
 
 describe('Alarm', () => {
 
+    afterEach(() => {
+        vi.useRealTimers();
+    });
+
     it('should create object', () => {
         //Arrange & Act
         const mockCallback = vi.fn();
@@ -134,8 +138,33 @@ describe('Alarm', () => {
 
         //Assert
         expect(mockCallback).toHaveBeenCalled();
+    });
 
-        vi.useRealTimers();
+    it("should delete interval when onTimeout is triggered", async () => {
+        //Arrange
+        vi.useFakeTimers();
+        const mockCallback = vi.fn();
+        const mockedTimeProvider: TimeProvider = {
+            now: Temporal.PlainDateTime.from(
+                {
+                    year: 2026,
+                    month: 4,
+                    day: 1,
+                    hour: 8,
+                    minute: 50,
+                    second: 0
+                }
+            )
+        };
+
+        //Act
+        let sut = new Alarm(new Temporal.PlainTime(9), { count: 1, timeBetween: 5 }, mockCallback, mockedTimeProvider);
+       
+        await vi.advanceTimersByTime(5 * 60 * 1000 );
+
+        //Assert
+        expect(sut.numberOfIntervals).toBe(0);
+        expect(sut.intervals.length).toBe(0);
     });
 
 });
