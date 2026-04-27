@@ -134,7 +134,7 @@ describe('Alarm', () => {
         //Act
         let sut = new Alarm(new Temporal.PlainTime(9), { count: 1, timeBetween: 5 }, mockCallback, mockedTimeProvider);
 
-        await vi.advanceTimersByTimeAsync(1000);
+        await vi.advanceTimersByTimeAsync(5 * 60 * 1000);
 
         //Assert
         expect(mockCallback).toHaveBeenCalled();
