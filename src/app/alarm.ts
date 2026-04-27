@@ -81,7 +81,7 @@ export class Alarm{
             let intervalTime = this.scheduledTime.subtract({minutes:difference})
 
             this._intervals[i] = {
-                timeoutId: setTimeout(() => this.handleTimeout(), this.timeoutDiference(intervalTime)),
+                timeoutId: setTimeout(() => this.handleTimeout(), this.timeoutDifference(intervalTime)),
                 value: intervalTime
 
             };
@@ -110,9 +110,13 @@ export class Alarm{
         clearTimeout(lastInterval?.timeoutId);
     }
 
-    private timeoutDiference(time: Temporal.PlainTime): number
+    private timeoutDifference(time: Temporal.PlainTime): number
     {
-        return time.until(this._timeProvider.now).milliseconds;
-        
+        const intervalDateTime = this._timeProvider.now.toPlainDate().toPlainDateTime(time);
+        return this._timeProvider.now.until(intervalDateTime).total({ unit: "milliseconds" });
     }
+
+    //Falta añadir el timeout para scheduledTime, poder modificarlo
+    // en cualquier momento y recalcular sus intervalos.
+    //Para ello tocaría hacer clearTimeout's de sus interval's
 }
