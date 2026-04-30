@@ -15,7 +15,7 @@ export interface IntervalConfiguration{
     timeBetween: number,
 }
 
-type OnTimeoutDelegate = () => void;
+export type OnTimeoutDelegate = () => void;
 
 export class Alarm{
     
