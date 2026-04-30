@@ -65,21 +65,9 @@ describe('Alarm', () => {
         //Arrange
         vi.useFakeTimers();
         const mockCallback = vi.fn();
-        const mockedTimeProvider: TimeProvider = {
-            now: Temporal.PlainDateTime.from(
-                {
-                    year: 2026,
-                    month: 4,
-                    day: 1,
-                    hour: 8,
-                    minute: 50,
-                    second: 0
-                }
-            )
-        };
-
+       
         //Act
-        let sut = new Alarm(new Temporal.PlainTime(9), { count: 1, timeBetween: 5 }, mockCallback, mockedTimeProvider);
+        let sut = AlarmMother.withCount(2, mockCallback);
 
         await vi.advanceTimersByTimeAsync(5 * 60 * 1000);
 
