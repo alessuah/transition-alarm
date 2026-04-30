@@ -1,5 +1,5 @@
 import { TestBed } from "@angular/core/testing";
-import { Alarm, TimeProvider } from './alarm';
+import { Alarm, TimeProvider } from '../alarm';
 import { Temporal } from "@js-temporal/polyfill";
 
 describe('Alarm', () => {
