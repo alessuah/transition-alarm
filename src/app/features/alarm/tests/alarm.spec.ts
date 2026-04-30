@@ -23,21 +23,8 @@ describe('Alarm', () => {
     });
 
     it('should add new interval', () => {
-        //Arrange
-        const mockCallback = vi.fn();
-        const mockedTimeProvider: TimeProvider = {
-            now: Temporal.PlainDateTime.from(
-                {
-                    year: 2026,
-                    month: 4,
-                    day: 1,
-                    hour: 8,
-                    minute: 50,
-                    second: 0
-                }
-            )
-        };
-        let sut = new Alarm(new Temporal.PlainTime(9), { count: 2, timeBetween: 5 }, mockCallback,mockedTimeProvider);
+        //Arrange & Act
+        let sut = AlarmMother.withCount(2, vi.fn());
 
         //Act
         sut.addInterval();
