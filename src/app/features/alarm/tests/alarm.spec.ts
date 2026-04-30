@@ -78,22 +78,11 @@ describe('Alarm', () => {
     it("should delete interval when onTimeout is triggered", async () => {
         //Arrange
         vi.useFakeTimers();
-        const mockCallback = vi.fn();
-        const mockedTimeProvider: TimeProvider = {
-            now: Temporal.PlainDateTime.from(
-                {
-                    year: 2026,
-                    month: 4,
-                    day: 1,
-                    hour: 8,
-                    minute: 50,
-                    second: 0
-                }
-            )
-        };
-
+         const mockCallback = vi.fn();
+       
         //Act
-        let sut = new Alarm(new Temporal.PlainTime(9), { count: 1, timeBetween: 5 }, mockCallback, mockedTimeProvider);
+        let sut = AlarmMother.withCount(1, mockCallback);
+
        
         await vi.advanceTimersByTime(5 * 60 * 1000 );
 
