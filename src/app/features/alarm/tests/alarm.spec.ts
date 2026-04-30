@@ -67,12 +67,12 @@ describe('Alarm', () => {
         const mockCallback = vi.fn();
        
         //Act
-        let sut = AlarmMother.withCount(2, mockCallback);
+        let sut = AlarmMother.withCount(1, mockCallback);
 
         await vi.advanceTimersByTimeAsync(5 * 60 * 1000);
 
         //Assert
-        expect(mockCallback).toHaveBeenCalled();
+        expect(mockCallback).toHaveBeenCalledTimes(1);
     });
 
     it("should delete interval when onTimeout is triggered", async () => {
