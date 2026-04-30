@@ -1,6 +1,7 @@
 import { TestBed } from "@angular/core/testing";
 import { Alarm, TimeProvider } from '../alarm';
 import { Temporal } from "@js-temporal/polyfill";
+import {AlarmMother} from "./alarm-mother";
 
 describe('Alarm', () => {
 
@@ -10,20 +11,7 @@ describe('Alarm', () => {
 
     it('should create object', () => {
         //Arrange & Act
-        const mockCallback = vi.fn();
-        const mockedTimeProvider: TimeProvider = {
-            now: Temporal.PlainDateTime.from(
-                {
-                    year: 2026,
-                    month: 4,
-                    day: 1,
-                    hour: 8,
-                    minute: 50,
-                    second: 0
-                }
-            )
-        };
-        let sut = new Alarm(new Temporal.PlainTime(9), { count: 2, timeBetween: 5 }, mockCallback, mockedTimeProvider);
+        let sut = AlarmMother.withCount(2, vi.fn());
 
         //Assert
         expect(sut).toBeTruthy();
