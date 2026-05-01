@@ -33,6 +33,7 @@ export class Alarm{
         this._intervals = new Array(intervalConfiguration.count);
         this._onTimeout = onTimeout;
         this._timeProvider = timeProvider;
+        setTimeout(() => onTimeout(), this.timeoutDifference(scheduledTime));
         this.buildIntervals();
     }
 
@@ -122,7 +123,6 @@ export class Alarm{
         return this._timeProvider.now.until(intervalDateTime).total({ unit: "milliseconds" });
     }
 
-    //Falta añadir el timeout para scheduledTime, poder modificarlo
-    // en cualquier momento y recalcular sus intervalos.
-    //Para ello tocaría hacer clearTimeout's de sus interval's
+    //Poder modificar scheduledTime en cualquier momento, recalcular sus intervalos
+    //y hacer clearTimeout's de todos los interval's
 }

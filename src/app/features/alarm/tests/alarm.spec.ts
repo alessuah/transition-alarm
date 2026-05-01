@@ -107,4 +107,20 @@ describe('Alarm', () => {
         expect(sut.intervals[0].value.toString()).toBe("08:55:00");
         expect(mockCallback).toHaveBeenCalledTimes(0);
     });
+
+    it("should call onTimeout when the scheduled time is reached", async () => {
+        
+        //Arrange
+        vi.useFakeTimers();
+        const mockCallback = vi.fn();
+        let sut = AlarmMother.withCount(0, mockCallback);
+
+        //Act
+        await vi.advanceTimersByTime(10 * 60 * 1000);
+
+        //Assert
+        expect(sut.intervals.length).toBe(0);
+        expect(sut.scheduledTime.toString()).toBe("09:00:00");
+        expect(mockCallback).toHaveBeenCalledTimes(1);
+    });
 });
