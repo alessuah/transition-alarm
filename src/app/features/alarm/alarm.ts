@@ -109,9 +109,11 @@ export class Alarm{
 
     public deleteInterval()
     {
-        //Hay que comprobar si lastInterval es indefinido si no al hacer clearTimeout epxlota seguro.
         let lastInterval = this._intervals.pop();
-        clearTimeout(lastInterval?.timeoutId);
+        if(lastInterval !== undefined)
+        {
+            clearTimeout(lastInterval?.timeoutId);
+        }
     }
 
     private timeoutDifference(time: Temporal.PlainTime): number
