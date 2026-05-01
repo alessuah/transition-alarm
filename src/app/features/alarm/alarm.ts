@@ -80,12 +80,7 @@ export class Alarm{
         for(let i = 0; i < this._intervals.length; i++)
         {
             let intervalTime = this.scheduledTime.subtract({minutes:difference})
-
-            this._intervals[i] = {
-                timeoutId: setTimeout(() => this.handleTimeout(), this.timeoutDifference(intervalTime)),
-                value: intervalTime
-
-            };
+            this._intervals[i] = this.createInterval(intervalTime);
             difference += this._timeBetweenIntervals;
         }
     }
@@ -95,10 +90,15 @@ export class Alarm{
         const baseTime = this._intervals.length === 0 ? this.scheduledTime : this.intervals[this._intervals.length - 1].value;
         const value = baseTime.subtract({ minutes: this.timeBetweenIntervals });
 
-        this._intervals.push({
-            timeoutId: setTimeout(() => {this.handleTimeout()}, this.timeoutDifference(value)),
-            value,
-        });
+        this._intervals.push(this.createInterval(value));
+    }
+
+    private createInterval(time: Temporal.PlainTime): Interval
+    {
+        return {
+            timeoutId: setTimeout(() => {this.handleTimeout()}, this.timeoutDifference(time)),
+            value: time,
+        };
     }
 
     private handleTimeout(): void
