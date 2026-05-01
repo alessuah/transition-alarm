@@ -1,4 +1,5 @@
 import { Temporal } from "@js-temporal/polyfill";
+import { timeout } from "rxjs";
 
 export interface TimeProvider
 {
@@ -89,12 +90,15 @@ export class Alarm{
         }
     }
 
-    public addInterval()
+    public addInterval(): void
     {
-        let lastInterval = this.intervals[this._intervals.length -1];
+        const baseTime = this._intervals.length === 0 ? this.scheduledTime : this.intervals[this._intervals.length - 1].value;
+        const value = baseTime.subtract({ minutes: this.timeBetweenIntervals });
+
         this._intervals.push({
-            timeoutId: setTimeout(this._onTimeout, 0),
-            value: lastInterval.value.subtract({minutes:this.timeBetweenIntervals})});
+            timeoutId: setTimeout(() => {this.handleTimeout()}, this.timeoutDifference(value)),
+            value,
+        });
     }
 
     private handleTimeout(): void

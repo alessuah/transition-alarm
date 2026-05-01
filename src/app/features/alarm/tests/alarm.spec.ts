@@ -83,7 +83,6 @@ describe('Alarm', () => {
         //Act
         let sut = AlarmMother.withCount(1, mockCallback);
 
-       
         await vi.advanceTimersByTime(5 * 60 * 1000 );
 
         //Assert
@@ -91,4 +90,21 @@ describe('Alarm', () => {
         expect(sut.intervals.length).toBe(0);
     });
 
+    it("should create interval once object is created with no prior interval", async () => {
+        
+        //Arrange
+        vi.useFakeTimers();
+        const mockCallback = vi.fn();
+        let sut = AlarmMother.withCount(0, mockCallback);
+
+        //Act
+        sut.addInterval();
+        await vi.advanceTimersByTime(4 * 60 * 1000);
+
+        //Assert
+        expect(sut.intervals.length).toBe(1);
+        expect(sut.scheduledTime.toString()).toBe("09:00:00");
+        expect(sut.intervals[0].value.toString()).toBe("08:55:00");
+        expect(mockCallback).toHaveBeenCalledTimes(0);
+    });
 });
