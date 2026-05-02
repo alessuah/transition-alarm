@@ -67,25 +67,25 @@ describe('Alarm', () => {
 
         //Arrange
         vi.useFakeTimers();
-        const mockCallback = vi.fn();
+        const spy = vi.fn();
 
         //Act
-        let sut = AlarmMother.withCount(1, mockCallback);
+        let sut = AlarmMother.withCount(1, spy);
 
         await vi.advanceTimersByTimeAsync(5 * 60 * 1000);
 
         //Assert
-        expect(mockCallback).toHaveBeenCalledTimes(1);
+        expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it("should delete interval when onTimeout is triggered", async () => {
 
         //Arrange
         vi.useFakeTimers();
-        const mockCallback = vi.fn();
+        const spy = vi.fn();
 
         //Act
-        let sut = AlarmMother.withCount(1, mockCallback);
+        let sut = AlarmMother.withCount(1, spy);
 
         await vi.advanceTimersByTime(5 * 60 * 1000);
 
@@ -98,8 +98,8 @@ describe('Alarm', () => {
 
         //Arrange
         vi.useFakeTimers();
-        const mockCallback = vi.fn();
-        let sut = AlarmMother.withCount(0, mockCallback);
+        const spy = vi.fn();
+        let sut = AlarmMother.withCount(0, spy);
 
         //Act
         sut.addInterval();
@@ -109,15 +109,15 @@ describe('Alarm', () => {
         expect(sut.intervals.length).toBe(1);
         expect(sut.scheduledTime.toString()).toBe("09:00:00");
         expect(sut.intervals[0].value.toString()).toBe("08:55:00");
-        expect(mockCallback).toHaveBeenCalledTimes(0);
+        expect(spy).toHaveBeenCalledTimes(0);
     });
 
     it("should call onTimeout when the scheduled time is reached", async () => {
 
         //Arrange
         vi.useFakeTimers();
-        const mockCallback = vi.fn();
-        let sut = AlarmMother.withCount(0, mockCallback);
+        const spy = vi.fn();
+        let sut = AlarmMother.withCount(0, spy);
 
         //Act
         await vi.advanceTimersByTime(10 * 60 * 1000);
@@ -125,7 +125,7 @@ describe('Alarm', () => {
         //Assert
         expect(sut.intervals.length).toBe(0);
         expect(sut.scheduledTime.toString()).toBe("09:00:00");
-        expect(mockCallback).toHaveBeenCalledTimes(1);
+        expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it("should recalculate intervals when scheduledTime is changed", () => {
