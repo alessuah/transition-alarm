@@ -1,5 +1,4 @@
 import { Temporal } from "@js-temporal/polyfill";
-import { timeout } from "rxjs";
 
 export interface TimeProvider
 {
@@ -40,6 +39,18 @@ export class Alarm{
     private _scheduledTime : Temporal.PlainTime;
     public get scheduledTime() : Temporal.PlainTime {
         return this._scheduledTime;
+    }
+
+    public set scheduledTime(value: Temporal.PlainTime)
+    {
+        this._scheduledTime = value;
+
+        this._intervals.forEach(i => {
+            clearTimeout(i.timeoutId);
+        });
+
+        this._intervals = new Array(this._intervals.length);
+        this.buildIntervals();
     }
 
     public get numberOfIntervals() : number
@@ -122,7 +133,4 @@ export class Alarm{
         const intervalDateTime = this._timeProvider.now.toPlainDate().toPlainDateTime(time);
         return this._timeProvider.now.until(intervalDateTime).total({ unit: "milliseconds" });
     }
-
-    //Poder modificar scheduledTime en cualquier momento, recalcular sus intervalos
-    //y hacer clearTimeout's de todos los interval's
 }

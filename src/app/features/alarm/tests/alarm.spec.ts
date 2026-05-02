@@ -123,4 +123,20 @@ describe('Alarm', () => {
         expect(sut.scheduledTime.toString()).toBe("09:00:00");
         expect(mockCallback).toHaveBeenCalledTimes(1);
     });
+
+    it("should recalculate intervals when scheduledTime is changed", () => {
+        
+        //Arrange
+        let sut = AlarmMother.withCount(1, vi.fn());
+
+        expect(sut.scheduledTime.toString()).toBe("09:00:00");
+        expect(sut.intervals[0].value.toString()).toBe("08:55:00");
+
+        //Act
+        sut.scheduledTime = Temporal.PlainTime.from({hour:10, minute:0, second:0});
+
+        //Assert
+        expect(sut.scheduledTime.toString()).toBe("10:00:00");
+        expect(sut.intervals[0].value.toString()).toBe("09:55:00");
+    });
 });
