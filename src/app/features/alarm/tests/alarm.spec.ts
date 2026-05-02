@@ -1,7 +1,5 @@
-import { TestBed } from "@angular/core/testing";
-import { Alarm, TimeProvider } from '../alarm';
 import { Temporal } from "@js-temporal/polyfill";
-import {AlarmMother} from "./alarm-mother";
+import { AlarmMother } from "./alarm-mother";
 
 describe('Alarm', () => {
 
@@ -10,6 +8,7 @@ describe('Alarm', () => {
     });
 
     it('should create object', () => {
+
         //Arrange & Act
         let sut = AlarmMother.withCount(2, vi.fn());
 
@@ -23,7 +22,8 @@ describe('Alarm', () => {
     });
 
     it('should add new interval', () => {
-        //Arrange & Act
+
+        //Arrange
         let sut = AlarmMother.withCount(2, vi.fn());
 
         //Act
@@ -37,7 +37,8 @@ describe('Alarm', () => {
     });
 
     it('should delete last interval added', () => {
-       //Arrange & Act
+
+        //Arrange
         let sut = AlarmMother.withCount(2, vi.fn());
 
         //Act
@@ -50,7 +51,8 @@ describe('Alarm', () => {
     });
 
     it('should ignore deletion of a non-existent interval', () => {
-       //Arrange & Act
+
+        //Arrange
         let sut = AlarmMother.withCount(0, vi.fn());
 
         //Act
@@ -62,10 +64,11 @@ describe('Alarm', () => {
     });
 
     it("should call onTimeout event once per number of intervals", async () => {
+
         //Arrange
         vi.useFakeTimers();
         const mockCallback = vi.fn();
-       
+
         //Act
         let sut = AlarmMother.withCount(1, mockCallback);
 
@@ -76,14 +79,15 @@ describe('Alarm', () => {
     });
 
     it("should delete interval when onTimeout is triggered", async () => {
+
         //Arrange
         vi.useFakeTimers();
-         const mockCallback = vi.fn();
-       
+        const mockCallback = vi.fn();
+
         //Act
         let sut = AlarmMother.withCount(1, mockCallback);
 
-        await vi.advanceTimersByTime(5 * 60 * 1000 );
+        await vi.advanceTimersByTime(5 * 60 * 1000);
 
         //Assert
         expect(sut.numberOfIntervals).toBe(0);
@@ -91,7 +95,7 @@ describe('Alarm', () => {
     });
 
     it("should create interval once object is created with no prior interval", async () => {
-        
+
         //Arrange
         vi.useFakeTimers();
         const mockCallback = vi.fn();
@@ -109,7 +113,7 @@ describe('Alarm', () => {
     });
 
     it("should call onTimeout when the scheduled time is reached", async () => {
-        
+
         //Arrange
         vi.useFakeTimers();
         const mockCallback = vi.fn();
@@ -125,7 +129,7 @@ describe('Alarm', () => {
     });
 
     it("should recalculate intervals when scheduledTime is changed", () => {
-        
+
         //Arrange
         let sut = AlarmMother.withCount(1, vi.fn());
 
@@ -133,7 +137,7 @@ describe('Alarm', () => {
         expect(sut.intervals[0].value.toString()).toBe("08:55:00");
 
         //Act
-        sut.scheduledTime = Temporal.PlainTime.from({hour:10, minute:0, second:0});
+        sut.scheduledTime = Temporal.PlainTime.from({ hour: 10, minute: 0, second: 0 });
 
         //Assert
         expect(sut.scheduledTime.toString()).toBe("10:00:00");
