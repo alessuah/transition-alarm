@@ -32,7 +32,7 @@ export class Alarm{
         this._intervals = new Array(intervalConfiguration.count);
         this._onTimeout = onTimeout;
         this._timeProvider = timeProvider;
-        setTimeout(() => onTimeout(), this.timeoutDifference(scheduledTime));
+        setTimeout(() => onTimeout(), this.calculateTimeoutDifference(scheduledTime));
         this.buildIntervals();
     }
 
@@ -108,7 +108,7 @@ export class Alarm{
     private createInterval(time: Temporal.PlainTime): Interval
     {
         return {
-            timeoutId: setTimeout(() => {this.handleTimeout()}, this.timeoutDifference(time)),
+            timeoutId: setTimeout(() => {this.handleTimeout()}, this.calculateTimeoutDifference(time)),
             value: time,
         };
     }
@@ -128,7 +128,7 @@ export class Alarm{
         }
     }
 
-    private timeoutDifference(time: Temporal.PlainTime): number
+    private calculateTimeoutDifference(time: Temporal.PlainTime): number
     {
         const intervalDateTime = this._timeProvider.now.toPlainDate().toPlainDateTime(time);
         return this._timeProvider.now.until(intervalDateTime).total({ unit: "milliseconds" });
